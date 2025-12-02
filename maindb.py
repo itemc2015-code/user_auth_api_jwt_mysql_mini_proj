@@ -12,6 +12,9 @@ db = mysql.connector.connect(
 )
 
 class Users:
-    def signup(username,password):
+    def signup(self,username,password):
+        db.ping(reconnect=True)
+        dbcursor=db.cursor(dictionary=True,buffered=True)
         querry = 'insert into user_info(users,password) values(%s,%s)'
+        dbcursor.execute(querry,(username,password))
 
