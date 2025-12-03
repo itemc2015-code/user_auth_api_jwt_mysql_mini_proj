@@ -17,4 +17,7 @@ class Users:
         dbcursor=db.cursor(dictionary=True,buffered=True)
         querry = 'insert into user_info(users,password) values(%s,%s)'
         dbcursor.execute(querry,(username,password))
+        db.commit()
+        dbcursor.close()
+        db.close()
 
