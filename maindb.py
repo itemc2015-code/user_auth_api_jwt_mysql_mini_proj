@@ -16,10 +16,19 @@ class Users:
         db.ping(reconnect=True)
         dbcursor=db.cursor(dictionary=True,buffered=True)
         querry = 'insert into user_info(users,password) values(%s,%s)'
-        dbcursor.execute(querry,(username,password))
+        dbcursor.execute(querry,(username,password,))
         db.commit()
         dbcursor.close()
         db.close()
+    def login(self,username):
+        db.ping(reconnect=True)
+        dbcursor=db.cursor(buffered=True)
+        querry='select id,users,password from user_info where users=%s'
+        dbcursor.execute(querry,(username,))
+        result=dbcursor.fetchall()
+        dbcursor.close()
+        db.close()
+        return result
 
 class Verify(Users):
     def check_username(self,username):
@@ -28,5 +37,13 @@ class Verify(Users):
         querry='select users from user_info where users=%s'
         dbcursor.execute(querry,(username,))
         result=dbcursor.fetchone()
+        dbcursor.close()
+        return result
+    def user_info_querry(self):
+        db.ping(reconnect=True)
+        dbcursor=db.cursor(buffered=True)
+        querry='select * from user_info'
+        dbcursor.execute(querry)
+        result=dbcursor.fetchall()
         dbcursor.close()
         return result
