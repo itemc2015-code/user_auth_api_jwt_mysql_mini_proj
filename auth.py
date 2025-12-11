@@ -24,16 +24,17 @@ async def signup_post(username:str,password:str,sign_service=Depends(depend_user
 @router.post('/login')
 async def login_post(username:str,password:str,login_service=Depends(depend_users),select_all=Depends(depend_verify)):
     credentials=login_service.login(username)
-    id,u_name,pwd=credentials[0]
 
     if len(credentials) == 0:
         return 'Invalid username'
+
+    id,u_name,pwd=credentials[0]
     check_pwd = pwd_context.verify(password, pwd)
     if not check_pwd:
         return 'Invalid password'
 
     exp = datetime.utcnow() + timedelta(minutes=exp_time)
-    for_payload = {'id':id,'user':u_name,'exp':exp.timestamp()}
+    for_payload = {'id':id,'user':u_name,'exp':int(exp.timestamp())}
     token=jwt.encode(for_payload,SECRET_KEY,algorithm=ALGORITHM)
     return {'access_token':token,'token_type':'bearer','user':{'id':id,'username':u_name}}
 
