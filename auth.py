@@ -11,7 +11,7 @@ router = APIRouter(prefix='/user',tags=['User'])
 pwd_context = CryptContext(schemes=['sha256_crypt'],deprecated='auto')
 SECRET_KEY='mysecretkey'
 ALGORITHM='HS256'
-exp_time=15
+exp_time=60
 
 @router.post('/signup')
 async def signup_post(username:str,password:str,sign_service=Depends(depend_users),verify_service=Depends(depend_verify)):
@@ -37,7 +37,7 @@ async def login_post(form:OAuth2PasswordRequestForm=Depends(),login_service=Depe
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail='Password invalid')
 
     exp = datetime.utcnow() + timedelta(minutes=exp_time)
-    for_payload = {'id':id,'user':u_name,'exp':int(exp.timestamp())}
+    for_payload = {'id':id,'user':u_name,'exp':exp}
     token=jwt.encode(for_payload,SECRET_KEY,algorithm=ALGORITHM)
     return {'access_token':token,'token_type':'bearer','user':{'id':id,'username':u_name}}
 

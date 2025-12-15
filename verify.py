@@ -9,6 +9,9 @@ def verify_token(token=Depends(oauth_scheme)):
     #print(token)
     try:
         decode_token=jwt.decode(token,SECRET_KEY,algorithms=[ALGORITHM])
+        #print(decode_token)
         return decode_token
-    except:
-        raise HTTPException(status_code=400,detail='Token invalid or expired')
+    except Exception as e:
+        #print('jwt error',e)
+        # raise HTTPException(status_code=400,detail='Token invalid or expired')
+        raise HTTPException(status_code=400, detail=str(e))

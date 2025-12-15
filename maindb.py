@@ -47,3 +47,4 @@ class Verify(Users):
         result=dbcursor.fetchall()
         dbcursor.close()
         return result
+

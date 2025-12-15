@@ -1,10 +1,12 @@
 from fastapi import FastAPI,Depends,HTTPException,status
 from auth import router
+from action import router as action_router
 from verify import  verify_token
 from fastapi.security import OAuth2PasswordBearer
 
 app = FastAPI()
 app.include_router(router)
+app.include_router(action_router)
 
 @app.get('/protected')
 async def protected(user=Depends(verify_token)):
