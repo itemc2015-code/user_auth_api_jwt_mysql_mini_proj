@@ -36,9 +36,15 @@ class Users:
         dbcursor.execute(querry,(password,username,))
         db.commit()
         db.close()
-        dbcursor.close()cd\
-
-
+        dbcursor.close()
+    def delete_user(self,user_id):
+        db.ping(reconnect=True)
+        dbcursor=db.cursor(buffered=True)
+        querry='delete from user_info where id=%s'
+        dbcursor.execute(querry,(user_id,))
+        db.commit()
+        db.close()
+        dbcursor.close()
 
 class Verify(Users):
     def check_username(self,username):
